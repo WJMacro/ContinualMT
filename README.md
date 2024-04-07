@@ -9,7 +9,8 @@
  - [Architecture](#architecture)  
  - [Installation](#installation)  
  - [Preparing and Preprocessing](#preparing-and-preprocessing)  
- - [Domain Incremental Training](#domain-incremental-training)  
+ - [Domain Incremental Training](#domain-incremental-training)   
+ - [Extending for New Approaches](#extending-for-new-approaches) 
  - [Reference](#reference)  
  
 ## Introduction    
@@ -56,7 +57,7 @@ Install fairseq (```pip install --editable .```), [moses](https://github.com/mos
 
 ## Preparing and Preprocessing
 
-### Pre-trained model
+### Pre-trained Model
 Download the [pre-trained WMT19 German-English model](https://github.com/facebookresearch/fairseq/blob/v0.12.3/examples/translation/README.md) from fairseq, along with the dictionaries and the bpecodes.
 
 ### Data
@@ -68,10 +69,10 @@ For domain incremental training data, download the [mult-domain data](https://gi
 
 Finally, use the ```preprocess.sh``` script to prepare the binary files for fairseq.
 
-## Domain incremental training
+## Domain Incremental Training
 We offer training bash scripts for all supported approaches in ```./cl_scripts``` and ```./cl_scripts_slurm```. For more detailed information, please refer to the individual readme files located in each directory.
 
-## Extending for new approaches
+## Extending for New Approaches
 Expanding our framework is straightforward. To integrate new CL approaches, you simply need to make modifications within the ```./approaches```, ```./cl_scripts``` and ```./cl_scripts_slurm``` directories.
   
 ## Reference  

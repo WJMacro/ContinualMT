@@ -41,13 +41,13 @@ We offer a representative multi-domain machine translation dataset: [OPUS multi-
 ## Architecture 
 Our implementation is built upon [fairseq](https://github.com/facebookresearch/fairseq), with the following modifications:
 
-`./approaches`: code for supported continual learning approaches
-`./cl_scripts`: bash scripts for continual training
-`./cl_scripts_slurm`: slurm scripts for continual training
-`./lcheckpoints`: all training checkpoints are saved in this folder
-`./logs`: training logs
-`./pretrained_models`: folder for pretrained NMT models
-`./task_sequence`: reference sequences for OPUS multi-domain MT data
+`./approaches`: code for supported continual learning approaches    
+`./cl_scripts`: bash scripts for continual training    
+`./cl_scripts_slurm`: slurm scripts for continual training    
+`./lcheckpoints`: all training checkpoints are saved in this folder    
+`./logs`: training logs    
+`./pretrained_models`: folder for pretrained NMT models    
+`./task_sequence`: reference sequences for OPUS multi-domain MT data    
 
 ## Installation
 Firstly, build the enviorment from the provied YAML file.

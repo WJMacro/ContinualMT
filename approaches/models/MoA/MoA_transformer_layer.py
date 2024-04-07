@@ -13,12 +13,12 @@ from torch import Tensor
 from fairseq.models.transformer import TransformerConfig
 from fairseq.modules.transformer_layer import TransformerEncoderLayerBase, TransformerDecoderLayerBase
 
-from ..adapter.adapter import Adapter
-from .adapter_transformer_config import AdapterTransformerConfig
+from .MoA_layer import MoALayer
+from .MoA_config import MoAConfig
 
 
-class AdapterTransformerEncoderLayer(TransformerEncoderLayerBase):
-    """Encoder layer block with Adapter layer.
+class MoATransformerEncoderLayer(TransformerEncoderLayerBase):
+    """Encoder layer block with MoA layer.
 
     In the original paper each operation (multi-head attention or FFN) is
     postprocessed with: `dropout -> add residual -> layernorm`. In the
@@ -34,7 +34,7 @@ class AdapterTransformerEncoderLayer(TransformerEncoderLayerBase):
 
     def __init__(self, cfg, return_fc=False):
         super().__init__(cfg, return_fc)
-        self.ffn_adapter = Adapter(cfg.adapter, self.embed_dim)
+        self.MoA = MoALayer(cfg.MoA, self.embed_dim)
     
 
     def forward(
@@ -105,22 +105,19 @@ class AdapterTransformerEncoderLayer(TransformerEncoderLayerBase):
         
         x = self.residual_connection(x, residual)
 
-        # sequential ffn adapter
-        # x = self.ffn_adapter(x)
-
         if not self.normalize_before:
             x = self.final_layer_norm(x)
-        
-        # sequential feedforward adapter
-        x = self.ffn_adapter(x)
+
+        # Forword pass through the MoA layer
+        x = self.MoA(x, adapter_id=-1, fusion=True)
 
         if self.return_fc and not torch.jit.is_scripting():
             return x, fc_result
         return x
 
 
-class AdapterTransformerDecoderLayer(TransformerDecoderLayerBase):
-    """Decoder layer block with Adapter layer.
+class MoATransformerDecoderLayer(TransformerDecoderLayerBase):
+    """Decoder layer block with MoA layer.
 
     In the original paper each operation (multi-head attention, encoder
     attention or FFN) is postprocessed with: `dropout -> add residual ->
@@ -140,7 +137,7 @@ class AdapterTransformerDecoderLayer(TransformerDecoderLayerBase):
         self, cfg, no_encoder_attn=False, add_bias_kv=False, add_zero_attn=False
     ):
         super().__init__(cfg, no_encoder_attn, add_bias_kv, add_zero_attn)
-        self.ffn_adapter = Adapter(cfg.adapter, self.embed_dim)
+        self.MoA = MoALayer(cfg.MoA, self.embed_dim)
         
 
     def forward(
@@ -292,15 +289,12 @@ class AdapterTransformerDecoderLayer(TransformerDecoderLayerBase):
             
         x = self.residual_connection(x, residual)
 
-        # sequential ffn adapter
-        # x = self.ffn_adapter(x)
-
         if not self.normalize_before:
             x = self.final_layer_norm(x)
-
-        # sequential ffn adapter
-        x = self.ffn_adapter(x)
         
+        # Forword pass through the MoA layer
+        x = self.MoA(x, adapter_id=-1, fusion=True)
+
         if self.onnx_trace and incremental_state is not None:
             saved_state = self.self_attn._get_input_buffer(incremental_state)
             assert saved_state is not None

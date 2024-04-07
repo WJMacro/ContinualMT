@@ -13,8 +13,8 @@ CLEAN=$SCRIPTS/training/clean-corpus-n.perl
 NORM_PUNC=$SCRIPTS/tokenizer/normalize-punctuation.perl
 REM_NON_PRINT_CHAR=$SCRIPTS/tokenizer/remove-non-printing-char.perl
 FASTBPE=fastBPE
-BPECODES=pretrained_models/wmt19.de-en.joined-dict.ensemble/bpecodes
-VOCAB=pretrained_models/wmt19.de-en.joined-dict.ensemble/dict.en.txt
+BPECODES=../..pretrained_models/wmt19.de-en.joined-dict.ensemble/bpecodes
+VOCAB=../..pretrained_models/wmt19.de-en.joined-dict.ensemble/dict.en.txt
 
 URLS=(
     "http://statmt.org/wmt13/training-parallel-europarl-v7.tgz"

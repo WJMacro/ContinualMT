@@ -9,13 +9,13 @@ SEQ_ID=4
 
 export CUDA_VISIBLE_DEVICES=0
 
-CKPT_DIR=outputs/transformer-pte-seq-${SEQ_ID}
+CKPT_DIR=checkpoints/transformer-pte-seq-${SEQ_ID}
 
 TASKID=1
 
 rm -rf $CKPT_DIR
 mkdir -p $CKPT_DIR
-cp outputs/pte_general_kd/checkpoint_best.pt $CKPT_DIR/checkpoint_best.pt
+cp checkpoints/pte_general_kd/checkpoint_best.pt $CKPT_DIR/checkpoint_best.pt
 
 # read task sequence from /task_sequence/seq_${SEQ_ID}.txt
 TASK_SEQ=$(cat task_sequence/seq_${SEQ_ID}.txt)
@@ -50,8 +50,8 @@ do
         --skip-invalid-size-inputs-valid-test \
         --no-last-checkpoints \
         --finetune-from-model $CKPT_DIR/checkpoint_best.pt \
-        --freeze-mask-path outputs/pte_pruned_general/mask$((TASKID-1)).pt \
-        --tunable-mask-path outputs/pte_pruned_general/mask$TASKID.pt \
+        --freeze-mask-path checkpoints/pte_pruned_general/mask$((TASKID-1)).pt \
+        --tunable-mask-path checkpoints/pte_pruned_general/mask$TASKID.pt \
     
 
     # test on TEST_DATASET

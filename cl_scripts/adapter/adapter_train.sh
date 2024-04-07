@@ -11,7 +11,7 @@ do
     python fairseq_cli/train.py data-bin/$DATASET \
         --task translation \
         --user-dir approaches \
-        --save-dir outputs/adapter-$DATASET-new \
+        --save-dir checkpoints/adapter-$DATASET-new \
         --arch adapter@transformer_wmt19_de_en \
         --optimizer adam --adam-betas "(0.9, 0.98)" --clip-norm 0.0 \
         --lr 5e-4 --lr-scheduler inverse_sqrt \
@@ -34,7 +34,7 @@ do
     # test on TEST_DATASET
     echo "Testing on $DATASET"
     python fairseq_cli/generate.py data-bin/$DATASET \
-        --path outputs/adapter-$DATASET-new/checkpoint_best.pt \
+        --path checkpoints/adapter-$DATASET-new/checkpoint_best.pt \
         --task translation \
         --arch adapter@transformer_wmt19_de_en \
         --user-dir approaches \

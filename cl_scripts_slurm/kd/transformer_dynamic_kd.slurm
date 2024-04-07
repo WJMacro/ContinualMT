@@ -7,7 +7,7 @@
 #SBATCH --gres=gpu:1
 
 SEQ_ID=0
-CKPT_DIR=outputs/transformer-dynamic-kd-seq-$SEQ_ID
+CKPT_DIR=checkpoints/transformer-dynamic-kd-seq-$SEQ_ID
 
 TASKID=2
 lambda=0.999

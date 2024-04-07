@@ -2,12 +2,12 @@ DEVICE=$1
 
 export CUDA_VISIBLE_DEVICES=$DEVICE
 
-CKPT_DIR=outputs/pte_general_kd
+CKPT_DIR=checkpoints/pte_general_kd
 
 rm -rf $CKPT_DIR
 mkdir -p $CKPT_DIR
 
-MASK_DIR=outputs/pte_pruned_general/mask0.pt
+MASK_DIR=checkpoints/pte_pruned_general/mask0.pt
 
 python fairseq_cli/train.py data-bin/wmt17_de_en \
     --task pte_translation \
@@ -33,15 +33,15 @@ python fairseq_cli/train.py data-bin/wmt17_de_en \
     --no-save-optimizer-state \
     --skip-invalid-size-inputs-valid-test \
     --enable-knowledge-distillation \
-    --finetune-from-model outputs/pte_pruned_general/checkpoint.pt \
-    --teacher-model-path outputs/pte_general/checkpoint_best.pt \
+    --finetune-from-model checkpoints/pte_pruned_general/checkpoint.pt \
+    --teacher-model-path checkpoints/pte_general/checkpoint_best.pt \
     --tunable-mask-path $MASK_DIR 
 
 
 TEST_DATASET=general_test
 
 python fairseq_cli/generate.py data-bin/$TEST_DATASET \
-    --path outputs/pte_general_kd/checkpoint_best.pt \
+    --path checkpoints/pte_general_kd/checkpoint_best.pt \
     --task translation \
     --arch transformer_wmt19_de_en \
     --user-dir approaches \

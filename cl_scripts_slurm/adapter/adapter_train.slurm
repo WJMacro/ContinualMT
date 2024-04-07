@@ -1,9 +1,9 @@
 #!/bin/bash
 #SBATCH --job-name train_adapter
 #SBATCH --partition q_ai
-#SBATCH --output=./logs/adapter-128-koran.log
-#SBATCH --error=./logs/adapter-128-koran.log
-#SBATCH --nodelist=g17
+#SBATCH --output=./logs/adapter-64-koran.log
+#SBATCH --error=./logs/adapter-64-koran.log
+#SBATCH --nodelist=g30
 #SBATCH --gres=gpu:1
 
 DATASET=koran
@@ -13,7 +13,7 @@ echo "Training on $DATASET"
 python fairseq_cli/train.py data-bin/$DATASET \
     --task translation \
     --user-dir approaches \
-    --save-dir outputs/adapter-$DATASET-128 \
+    --save-dir checkpoints/adapter-$DATASET-64 \
     --arch adapter@transformer_wmt19_de_en \
     --optimizer adam --adam-betas "(0.9, 0.98)" --clip-norm 0.0 \
     --lr 5e-5 --lr-scheduler inverse_sqrt \
@@ -34,12 +34,13 @@ python fairseq_cli/train.py data-bin/$DATASET \
     --save-interval-updates 1000 \
     --skip-invalid-size-inputs-valid-test \
     --pretrained-transformer-path pretrained_models/wmt19.de-en.joined-dict.ensemble/model1.pt \
-    --adapter-bottelneck-dim 128 \
+    --adapter-bottelneck-dim 64 \
+    # --adapter-enable-layer-norm
 
 # test on TEST_DATASET
 echo "Testing on $DATASET"
 python fairseq_cli/generate.py data-bin/$DATASET \
-    --path outputs/adapter-$DATASET-128/checkpoint_best.pt \
+    --path checkpoints/adapter-$DATASET-64/checkpoint_best.pt \
     --task translation \
     --arch adapter@transformer_wmt19_de_en \
     --user-dir approaches \

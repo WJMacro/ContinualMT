@@ -10,7 +10,7 @@ SEQ_ID=0
 lambda=5000
 
 TASKID=0
-CKPT_DIR=outputs/transformer-ewc-seq-$SEQ_ID
+CKPT_DIR=checkpoints/transformer-ewc-seq-$SEQ_ID
 
 rm -rf $CKPT_DIR
 mkdir -p $CKPT_DIR

@@ -109,13 +109,14 @@ class FMALLOCTransformerEncoderLayer(TransformerEncoderLayerBase):
         if self.normalize_before:
             x = self.final_layer_norm(x)
         x = self.activation_fn(self.fc1(x))
-        x = self.activation_dropout_module(x)
 
         if self.enable_hat:
             x = self.ffn_hat(x)
 
         if self.calculate_ffn_importance:
             x = torch.mul(self.ffn_mask, x)
+            
+        x = self.activation_dropout_module(x)
 
         x = self.fc2(x)
 
@@ -302,13 +303,14 @@ class FMALLOCTransformerDecoderLayer(TransformerDecoderLayerBase):
                 x = self.final_layer_norm(x)
 
             x = self.activation_fn(self.fc1(x))
-            x = self.activation_dropout_module(x)
             
             if self.enable_hat:
                 x = self.ffn_hat(x)
 
             if self.calculate_ffn_importance:
                 x = torch.mul(self.ffn_mask, x)
+
+            x = self.activation_dropout_module(x)
         
             if self.ffn_layernorm is not None:
                 x = self.ffn_layernorm(x)

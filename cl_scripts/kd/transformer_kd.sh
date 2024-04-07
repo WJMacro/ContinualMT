@@ -3,7 +3,7 @@ SEQ_ID=$2
 
 export CUDA_VISIBLE_DEVICES=$DEVICE
 
-CKPT_DIR=outputs/transformer-kd-0.1-test
+CKPT_DIR=checkpoints/transformer-kd-0.1-test
 
 kd_lambda=0.1
 TASKID=0

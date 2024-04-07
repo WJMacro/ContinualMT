@@ -1,12 +1,12 @@
 #!/bin/bash
 #SBATCH --job-name test_general
 #SBATCH --partition q_ai
-#SBATCH --output=./logs/prune-general-subtitles.log
-#SBATCH --error=./logs/prune-general-subtitles.log
-#SBATCH --nodelist=g08
+#SBATCH --output=./logs/prune-general-subtitles-kl.log
+#SBATCH --error=./logs/prune-general-subtitles-kl.log
+#SBATCH --nodelist=g10
 #SBATCH --gres=gpu:1
 
-CKPT_DIR=checkpoints/transformer-ffn-importance-subtitles
+CKPT_DIR=checkpoints/transformer-ffn-importance-subtitles-kl
 
 rm -rf $CKPT_DIR
 mkdir -p $CKPT_DIR
@@ -27,7 +27,7 @@ python fairseq_cli/compute_hat_importance.py data-bin/$DATASET \
     --optimizer adam --adam-betas "(0.9, 0.98)" --clip-norm 0.0 \
     --lr 5e-5 --lr-scheduler inverse_sqrt \
     --weight-decay 0.0001 \
-    --criterion js_divergence \
+    --criterion kl_divergence \
     --max-tokens 2048 \
     --max-epoch 1 \
     --no-epoch-checkpoints \

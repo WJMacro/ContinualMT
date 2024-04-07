@@ -1,0 +1,73 @@
+#!/bin/bash
+#SBATCH --job-name train_ours
+#SBATCH --partition q_ai
+#SBATCH --output=./logs/prune-valid-ce.log
+#SBATCH --error=./logs/prune-valid-ce.log
+#SBATCH --nodelist=g10
+#SBATCH --gres=gpu:1
+
+SEQ_ID=0
+MAX_TEMP=400
+SPARSITY=0.20
+# min temperature should be 1 / max temperature
+MIN_TEMP=0.0025
+
+
+CKPT_DIR=checkpoints/prune-valid-ce
+
+rm -rf $CKPT_DIR
+mkdir -p $CKPT_DIR
+
+PT_MODEL_DIR=pretrained_models/wmt19.de-en.joined-dict.ensemble/model1.pt
+IMPORTANCE_DIR=checkpoints/transformer-ffn-importance-valid-ce/importance.pt
+
+TASKID=1
+# read task sequence from /task_sequence/seq_${SEQ_ID}.txt
+
+DATASET=it
+# train on current dataset
+echo "Training on $DATASET"
+python train.py data-bin/$DATASET \
+    --task fmalloc_translation \
+    --user-dir approaches \
+    --save-dir $CKPT_DIR \
+    --arch fmalloc@transformer_wmt19_de_en \
+    --optimizer adam --adam-betas "(0.9, 0.98)" --clip-norm 0.0 \
+    --lr 5e-4 --lr-scheduler inverse_sqrt \
+    --weight-decay 0.0001 \
+    --criterion label_smoothed_cross_entropy_with_capacity \
+    --label-smoothing 0.1 \
+    --max-tokens 4096 \
+    --eval-bleu --eval-bleu-args "{\"beam\": 5, \"max_len_a\": 1.2, \"max_len_b\": 10}" \
+    --eval-bleu-detok moses --eval-bleu-remove-bpe \
+    --max-update 100 \
+    --warmup-updates 4000 \
+    --skip-invalid-size-inputs-valid-test \
+    --restore-file $CKPT_DIR/checkpoint_best.pt \
+    --reset-optimizer --reset-dataloader --reset-meters \
+    --reset-lr-scheduler \
+    --pretrained-transformer-path $PT_MODEL_DIR \
+    --general-domain-mask-path $IMPORTANCE_DIR \
+    --enable-hat \
+    --hat-task-num 6 --hat-task-id $TASKID \
+    --hat-temperature $MIN_TEMP --hat-temperature-max $MAX_TEMP \
+    --hat-temperature-min $MIN_TEMP \
+    --hat-anneal-steps 1000 \
+    --sparsity $SPARSITY 
+    
+TEST_DATASET=general_test
+# test on TEST_DATASET
+echo "Testing on $TEST_DATASET with task id 0"
+python fairseq_cli/generate.py data-bin/$TEST_DATASET \
+    --path $CKPT_DIR/checkpoint_best.pt \
+    --task fmalloc_translation \
+    --arch fmalloc@transformer_wmt19_de_en \
+    --user-dir approaches \
+    --gen-subset test \
+    --quiet \
+    --beam 5 --remove-bpe \
+    --max-len-b 10 --max-len-a 1.2 \
+    --model-overrides "{'hat_task_id': 0, 'hat_temperature':$MAX_TEMP}"
+
+
+

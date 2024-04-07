@@ -9,7 +9,7 @@
 export CUDA_VISIBLE_DEVICES=1
 
 SEQ_ID=3
-CKPT_DIR=outputs/transformer-kd-0.1-seq-$SEQ_ID
+CKPT_DIR=checkpoints/transformer-kd-0.1-seq-$SEQ_ID
 
 KD_LAMBDA=0.1
 

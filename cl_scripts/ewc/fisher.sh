@@ -4,7 +4,7 @@ export CUDA_VISIBLE_DEVICES=$DEVICE
 
 TASKID=0
 lambda=5000
-CKPT_DIR=outputs/transformer-ewc
+CKPT_DIR=checkpoints/transformer-ewc
 TEST_DATASET=medical
 
 python fairseq_cli/compute_fisher.py data-bin/$TEST_DATASET \

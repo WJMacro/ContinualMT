@@ -13,13 +13,13 @@ SPARSITY=0.20
 MIN_TEMP=0.0025
 
 
-CKPT_DIR=outputs/transformer-fmalloc-${MAX_TEMP}-${SPARSITY}-seq-${SEQ_ID}
+CKPT_DIR=checkpoints/transformer-fmalloc-${MAX_TEMP}-${SPARSITY}-seq-${SEQ_ID}
 
 rm -rf $CKPT_DIR
 mkdir -p $CKPT_DIR
 
 PT_MODEL_DIR=pretrained_models/wmt19.de-en.joined-dict.ensemble/model1.pt
-IMPORTANCE_DIR=outputs/transformer-ffn-importance/importance.pt
+IMPORTANCE_DIR=checkpoints/transformer-ffn-importance/importance.pt
 
 TASKID=1
 # read task sequence from /task_sequence/seq_${SEQ_ID}.txt

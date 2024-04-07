@@ -6,7 +6,7 @@ python fairseq_cli/train.py data-bin/mixed-domain \
     --ddp-backend=no_c10d \
     --task translation \
     --user-dir approaches \
-    --save-dir outputs/transformer-mix \
+    --save-dir checkpoints/transformer-mix \
     --arch transformer_wmt_de_en \
     --share-decoder-input-output-embed \
     --decoder-normalize-before \
@@ -34,7 +34,7 @@ do
     # test on TEST_DATASET
     echo "Testing on $DATASET"
     python fairseq_cli/generate.py data-bin/$DATASET \
-        --path outputs/transformer-mix/checkpoint_best.pt \
+        --path checkpoints/transformer-mix/checkpoint_best.pt \
         --task translation \
         --arch hat@transformer_wmt_de_en \
         --user-dir approaches \

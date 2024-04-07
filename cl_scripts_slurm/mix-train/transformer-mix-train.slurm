@@ -9,7 +9,7 @@
 python fairseq_cli/train.py data-bin/mixed-domain \
     --task translation \
     --user-dir approaches \
-    --save-dir outputs/transformer-mix \
+    --save-dir checkpoints/transformer-mix \
     --arch transformer_wmt19_de_en \
     --optimizer adam --adam-betas "(0.9, 0.98)" --clip-norm 0.0 \
     --lr 1e-4 --lr-scheduler inverse_sqrt \
@@ -38,7 +38,7 @@ do
     # test on TEST_DATASET
     echo "Testing on $DATASET"
     python fairseq_cli/generate.py data-bin/$DATASET \
-        --path outputs/transformer-mix/checkpoint_best.pt \
+        --path checkpoints/transformer-mix/checkpoint_best.pt \
         --task translation \
         --arch hat@transformer_wmt_de_en \
         --user-dir approaches \

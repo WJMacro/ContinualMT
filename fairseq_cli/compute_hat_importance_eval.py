@@ -257,7 +257,8 @@ def importance(
     #if trainer.cfg.ema.store_ema and getattr(trainer.task, "uses_ema", False):
     #    extra_kwargs["ema_model"] = trainer.ema.get_model()
     step = 0
-    trainer.model.train()
+    trainer.model.eval()
+    trainer.criterion.eval()
     for i, samples in enumerate(progress):
         if i % 1000 == 0:
             logger.info("{}".format(i))

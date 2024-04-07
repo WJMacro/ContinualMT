@@ -3,7 +3,7 @@ SEQ_ID=$2
 
 export CUDA_VISIBLE_DEVICES=$DEVICE
 
-CKPT_DIR=outputs/transformer-dynamic-kd
+CKPT_DIR=checkpoints/transformer-dynamic-kd
 
 TASKID=2
 lambda=0.999

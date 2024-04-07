@@ -9,12 +9,12 @@
 DATASET=subtitle
 
 
-rm -rf outputs/finetune-$DATASET
-mkdir -p outputs/finetune-$DATASET
+rm -rf checkpoints/finetune-$DATASET
+mkdir -p checkpoints/finetune-$DATASET
 
 python train.py data-bin/$DATASET \
     --task translation \
-    --save-dir outputs/finetune-$DATASET \
+    --save-dir checkpoints/finetune-$DATASET \
     --arch transformer_wmt19_de_en \
     --optimizer adam --adam-betas "(0.9, 0.98)" --clip-norm 0.0 \
     --lr 1e-4 --lr-scheduler inverse_sqrt \
@@ -37,7 +37,7 @@ python train.py data-bin/$DATASET \
 
 echo "Testing on $DATASET"
 python fairseq_cli/generate.py data-bin/$DATASET \
-    --path outputs/finetune-$DATASET/checkpoint_best.pt \
+    --path checkpoints/finetune-$DATASET/checkpoint_best.pt \
     --task translation \
     --arch transformer_wmt19_de_en \
     --gen-subset test \

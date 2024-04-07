@@ -8,7 +8,7 @@
 
 SEQ_ID=0
 TASKID=0
-CKPT_DIR=outputs/fintune-seq-$SEQ_ID
+CKPT_DIR=checkpoints/fintune-seq-$SEQ_ID
 
 rm -rf $CKPT_DIR
 mkdir -p $CKPT_DIR

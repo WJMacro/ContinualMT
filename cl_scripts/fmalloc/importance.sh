@@ -2,7 +2,7 @@ DEVICE=$1
 
 export CUDA_VISIBLE_DEVICES=$DEVICE
 
-CKPT_DIR=outputs/transformer-ffn-importance
+CKPT_DIR=checkpoints/transformer-ffn-importance
 
 rm -rf $CKPT_DIR
 mkdir -p $CKPT_DIR

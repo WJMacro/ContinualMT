@@ -13,7 +13,7 @@ export CUDA_VISIBLE_DEVICES=0
 # test on TEST_DATASET
 echo "Testing on $DATASET"
 python fairseq_cli/generate.py data-bin/$DATASET \
-    --path outputs/adapter-$DATASET-128/checkpoint_best.pt \
+    --path checkpoints/adapter-$DATASET-128/checkpoint_best.pt \
     --task translation \
     --arch adapter@transformer_wmt19_de_en \
     --user-dir approaches \

@@ -4,7 +4,7 @@ SEQ_ID=$2
 export CUDA_VISIBLE_DEVICES=$DEVICE
 
 TASKID=0
-CKPT_DIR=outputs/fintune-seq
+CKPT_DIR=checkpoints/fintune-seq
 
 rm -rf $CKPT_DIR
 mkdir -p $CKPT_DIR

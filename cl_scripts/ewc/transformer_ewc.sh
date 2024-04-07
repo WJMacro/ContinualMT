@@ -5,7 +5,7 @@ lambda=$3
 export CUDA_VISIBLE_DEVICES=$DEVICE
 
 TASKID=0
-CKPT_DIR=outputs/transformer-ewc
+CKPT_DIR=checkpoints/transformer-ewc
 
 rm -rf $CKPT_DIR
 mkdir -p $CKPT_DIR

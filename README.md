@@ -78,4 +78,13 @@ Expanding our framework is straightforward. To integrate new CL approaches, you 
 ## Reference  
 We highly appreciate your act of staring and citing. Your attention to detail and recognition is greatly valued.  
   
-
+```bibtex 
+@misc{wu2024fmalloc,
+      title={F-MALLOC: Feed-forward Memory Allocation for Continual Learning in Neural Machine Translation}, 
+      author={Junhong Wu and Yuchen Liu and Chengqing Zong},
+      year={2024},
+      eprint={2404.04846},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL}
+}
+```
